@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import loadingImg from "./assets/loadingimg.png"
 import styled from 'styled-components'
-import { Input } from './todo'
+import { Input } from '@mui/material'
 
 const AdvancedLoadingComp = () => {
   const [users, setUsers]= useState([])

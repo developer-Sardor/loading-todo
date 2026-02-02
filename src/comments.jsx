@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Card, H1 } from './advancedLoading'
 import loadingImg from "./assets/loadingimg.png"
-import styled from 'styled-components'
-import { Input } from './todo'
+import { Input } from '@mui/material'
+
 
 const CommentsComp = () => {
     const [comments, setComments] = useState([])

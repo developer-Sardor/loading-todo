@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Card, H1 } from './advancedLoading'
-import { Input } from './todo'
 import loadingImg from "./assets/loadingimg.png"
+import { Input } from '@mui/material'
 
 const PostsComp = () => {
 
@@ -40,7 +40,7 @@ const PostsComp = () => {
   return (
     <div>
         <H1>Posts List</H1>
-        <Input type='text' placeholder='search post...' value={search} onChange={(e)=>setSearch(e.target.value)}/>
+        <input type='text' placeholder='search post...' value={search} onChange={(e)=>setSearch(e.target.value)}/>
         {loading && <img src={loadingImg} alt='loading...'/>}
         {filteredPosts.length === 0 && (<h2>No posts found</h2>)}
         {filteredPosts.map((post, index)=>{

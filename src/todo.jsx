@@ -1,71 +1,56 @@
-import React, { useEffect, useState } from 'react'
 import loadingImg from "./assets/loadingimg.png"
-import styled from 'styled-components'
-import { Card, H1 } from './advancedLoading'
+import { Button } from '@mui/material'
+import { useEffect, useState } from 'react'
 // ||
 const TodoComp = () => {
-    const [todos, setTodos]= useState([])
-    const [search, setSearch] = useState("")
+    const [todos, setTodos] = useState([])
+    const [filter, setFilter] = useState("all")
     const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(null)
 
     useEffect(()=>{
-        const fetchTodos = async()=>{
+        const fetchTodo = async()=>{
             try {
                 setLoading(true)
                 const res = await fetch("https://jsonplaceholder.typicode.com/todos")
                 if(!res.ok){
-                    throw new Error("Failed to fetch API")
+                    throw new Error("Failed to fetch user api")
                 }
                 const data = await res.json()
                 setTodos(data)
-            } catch (err) {
-               setError(err.message)  || "Something went wrong"
+            } catch (error) {
+                console.error("Failed to fetch todos", error)
             }finally{
                 setLoading(false)
             }
         }
-        fetchTodos()
+        fetchTodo()
     },[])
 
-    const filteredTodos = todos.filter((todo)=>{
-        const keyword = search.toLowerCase()
-        return(
-        todo.title.toLowerCase().includes(keyword)
-    )
+    const filteredTodo = todos.filter((todo)=>{
+        if(filter === "completed")return todo.completed;
+        if(filter === "incompleted") return !todo.completed;
+        return "all"
     })
-  return (
-    <div style={{padding:"5px 20px"}}>
-        <H1>Todos List</H1>
-        <div style={{display:"flex", justifyContent:"center"}}>
-            <Input type="text" placeholder='search todo...' value={search} onChange={(e)=> setSearch(e.target.value)} />
-        </div>
-        
-        {loading && <img src={loadingImg} alt='loading...'/>}
-        {filteredTodos.length === 0 && (<h2>No todos found</h2>)}
 
-        {filteredTodos.map((todo, index)=>{
-            return(
-                <Card key={index}>
-                    <p>{todo.userId}</p>
-                    <p>{todo.id}</p>
-                    <p>{todo.title}</p>
-                    <p>{todo.completed}</p>
-                </Card>
-            )
-        })}
-    </div>
+  return (
+        <div style={{padding:"20px"}}>
+            <Button onClick={()=>setFilter("all")} variant="text" sx={{margin:"0px 10px"}}>All</Button>
+            <Button onClick={()=>setFilter("completed")} variant="contained" sx={{margin:"0px 10px"}}>Completed</Button>
+            <Button onClick={()=>setFilter("incompleted")} variant="outlined" sx={{margin:"0px 10px"}}>Not Completed</Button> 
+            {loading && <img src={loadingImg}/>}
+        {filteredTodo.map((todo, index)=>{
+                return(
+                    <div key={todo.id}>
+                        <span>{index}</span>
+                        <p style={{marginLeft:"5px"}}>{todo.title}</p>
+                    </div>
+                    
+                )
+            })}
+        </div>
   )
 }
 
 export default TodoComp
 
-export const Input = styled.input`
-    padding: 5px 15px;
-    width: 400px;
-    border-radius: 4px;
-    cursor: pointer;
-    padding-left: 10px;
-    margin-bottom: 30px;
-    margin-top: 30px;
-`
+

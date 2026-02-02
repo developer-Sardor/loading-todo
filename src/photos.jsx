@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Input } from './todo'
 import loadingImg from "./assets/loadingimg.png"
 import { Card, H1 } from './advancedLoading'
+import { Input } from '@mui/material'
 
 const PhotosComp = () => {
     const [photos, setPhotos] = useState([])
